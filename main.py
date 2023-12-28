@@ -1,6 +1,28 @@
+from pyscript import document
+
 import numpy as np
 from skimage import io
 from sklearn.cluster import KMeans
+
+def changeImage(event):
+    #the hashtag is calling for an element with the given id
+    input_text = document.querySelector("#imageReceiver")
+    #with files, the value gives the filepath, but it might still work
+    theFile = extract_filename(input_text.value)
+    newFile = imageChanger(theFile)
+    output = document.create("div").create("a", href=newFile, download = True)
+    
+
+def extract_filename(path):
+    if path[:12] == "C:\\fakepath\\":
+        return path[12:]  # modern browser
+    x = path.rfind('/')
+    if x >= 0:  # Unix-based path
+        return path[x + 1:]
+    x = path.rfind('\\')
+    if x >= 0:  # Windows-based path
+        return path[x + 1:]
+    return path  # just the filename
 
 def imageChanger(original):
     original = io.imread(original)
@@ -30,4 +52,3 @@ def imageChanger(original):
                         else:
                             res[i][j] = 255
     return res.astype(np.uint8)
-
