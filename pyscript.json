@@ -1,3 +1,0 @@
-{
-    "packages": ["numpy", "scikit-image", "scikit-learn"]
-}

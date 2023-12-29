@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "esm": "^3.2.25",
+    "jquery": "^3.7.1",
+    "python-shell": "^5.0.0"
+  },
+  "packages": [
+    "numpy",
+    "scikit-image",
+    "scikit-learn",
+    "python-shell"
+  ],
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
