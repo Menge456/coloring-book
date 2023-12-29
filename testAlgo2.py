@@ -1,6 +1,9 @@
 import cv2
 import numpy as np
-from skimage import io
+from matplotlib import pyplot as pp
+
+def applyKernel(matrix, kernel):
+    return cv2.filter2D(matrix, -1, kernel)
 
 def gaussian_kernel(size, sigma=1):
     size = int(size) // 2
@@ -9,18 +12,40 @@ def gaussian_kernel(size, sigma=1):
     g =  np.exp(-((x**2 + y**2) / (2.0*sigma**2))) * normal
     return g
 
-def applyKernel(matrix, kernel):
-    return cv2.filter2D(matrix, -1, kernel)
+def sobel_filters(matrix):
+    Kx = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], np.float32)
+    Ky = np.array([[1, 2, 1], [0, 0, 0], [-1, -2, -1]], np.float32)
+
+    Ix = applyKernel(matrix, Kx)
+    Iy = applyKernel(matrix, Ky)
+    
+    G = np.hypot(Ix, Iy)
+    G = G / G.max() * 255
+    theta = np.arctan2(Iy, Ix)
+    
+    return (G, theta)
+
+def final_filter(matrix):
+    average = 0
+    for x in np.nditer(matrix):
+        average += x
+    average /= (matrix.size)
+    cv2.multiply(matrix, 1.2, matrix)
+    return matrix
 
 original = cv2.imread(
-    filename='balls.jpg',
-    flags=cv2.IMREAD_GRAYSCALE
-    )
+    filename='patrick.jpg',
+    flags=cv2.IMREAD_COLOR
+)
 
 g = gaussian_kernel(5)
-copy = applyKernel(matrix=original, kernel=g)
+copy = applyKernel(matrix=cv2.cvtColor(original, cv2.COLOR_BGR2GRAY), kernel=g)
+copy = final_filter(matrix=copy)
+sobel = sobel_filters(matrix=copy)[0]
+inverted = abs(255 - sobel)
 
-io.imshow(copy.astype(np.uint8))
-io.show()
-
-dotCloud = []
+pp.subplot(131),pp.imshow(cv2.cvtColor(original, cv2.COLOR_BGR2RGB)),pp.title('Original')
+pp.subplot(132),pp.imshow(copy, cmap="gray"),pp.title('Process 1')
+pp.subplot(133),
+pp.imshow(inverted, cmap="gray"),pp.title('Process 2')
+pp.show()
