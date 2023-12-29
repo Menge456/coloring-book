@@ -25,13 +25,15 @@ def sobel_filters(matrix):
     
     return (G, theta)
 
-def final_filter(matrix):
-    average = 0
-    for x in np.nditer(matrix):
-        average += x
-    average /= (matrix.size)
-    cv2.multiply(matrix, 1.2, matrix)
-    return matrix
+def clahe_filter(matrix):
+    # average = 0
+    # for x in np.nditer(matrix):
+    #     average += x
+    # average /= (matrix.size)
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+    return clahe.apply(matrix.astype(np.uint8))
+    # eturn cv2.adaptiveThreshold(matrix.astype(np.uint8), 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 0)
+
 
 original = cv2.imread(
     filename='patrick.jpg',
@@ -40,12 +42,11 @@ original = cv2.imread(
 
 g = gaussian_kernel(5)
 copy = applyKernel(matrix=cv2.cvtColor(original, cv2.COLOR_BGR2GRAY), kernel=g)
-copy = final_filter(matrix=copy)
-sobel = sobel_filters(matrix=copy)[0]
+sobel = sobel_filters(copy)[0]
 inverted = abs(255 - sobel)
+filtered = clahe_filter(inverted)
 
 pp.subplot(131),pp.imshow(cv2.cvtColor(original, cv2.COLOR_BGR2RGB)),pp.title('Original')
-pp.subplot(132),pp.imshow(copy, cmap="gray"),pp.title('Process 1')
-pp.subplot(133),
-pp.imshow(inverted, cmap="gray"),pp.title('Process 2')
+pp.subplot(132),pp.imshow(inverted, cmap="gray"),pp.title('Process 1')
+pp.subplot(133),pp.imshow(filtered, cmap="gray"),pp.title('Process 2')
 pp.show()
