@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Receiver</title>
-    <script type = "module" src="backend.ts"></script>
+    <script src = newBund.js></script>
 </head>
 <body>
    
     <!--Ideally the goal is to be able to add the multiple tag and still allow this to work, but I need to figure out how they work-->
-    <input type = "file" id= "imageReceiver" accept = "image/*" >
+    <input type = "file" id= "imageReceiver" accept = ".jpeg, .jpg, .png">
     <!--gotta make a changeImage function, just copy & paste whichever algo we're using-->
     <button onclick="changeImage()">Submit</button>
     <div id= "downloadSpot"></div>
