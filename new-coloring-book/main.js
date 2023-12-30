@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('node:path')
-const {spawn} = require('node:child_process')
+const {spawn}  = require('child_process')
+const electronSquirrelStartup = require('electron-squirrel-startup')
 
 
 
@@ -16,12 +17,24 @@ const createWindow = () => {
 }
 app.whenReady().then(() => {
   ipcMain.handle('ping', () => 'pong')
-  ipcMain.handle('changeImage', (theName) =>  
+  ipcMain.handle('changeImage', async () =>  
   {
-    const a = spawn('python3',[__dirname +"./testAlgo.py", theName])
-    a.stdout.on('data', function(data) { 
-    res.send(data.toString()); 
-} ) 
+    
+    
+ 
+ 
+  let theFile = undefined
+    let newFile = undefined;
+    const dialog = require('electron').dialog;
+    // can update these extensions later to include other image types when we have an alg that works for them
+      theFile = dialog.showOpenDialogSync({filters:[{ name: 'Images', extensions: ['jpg', 'jpeg'] },]});
+      const python = spawn('python3',["./testAlgo.py", theFile[0]]);
+
+      //python.stderr.on('data', (err) => {console.log(`error: + ${err}`)});
+      return "output." + "jpg";
+    
+    
+     
 }); 
 
   createWindow()

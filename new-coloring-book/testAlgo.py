@@ -34,7 +34,7 @@ for i in range(0, less_colors.shape[0]):
                         y = j+2 
                     else:
                         res[i][j] = 255
-print("hello dickwad!!")
+
 io.imsave("output" + theFinal, res.astype(np.uint8))
-sys.stdout(theFinal)
+#sys.stdout(theFinal)
 

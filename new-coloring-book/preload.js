@@ -5,6 +5,10 @@ contextBridge.exposeInMainWorld('versions', {
   chrome: () => process.versions.chrome,
   electron: () => process.versions.electron,
   ping: () => ipcRenderer.invoke('ping'),
-  changeImage: () => ipcRenderer.invoke('changeImage')
+  //you do args by doing {args: }
+  changeImage: () => {
+   
+    ipcRenderer.invoke('changeImage', {})
+  }
   // we can also expose variables, not just functions
 })
