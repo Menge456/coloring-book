@@ -34,7 +34,8 @@ for i in range(0, less_colors.shape[0]):
                         y = j+2 
                     else:
                         res[i][j] = 255
+#change this for if we figure out what's wrong
 
-io.imsave("output" + theFinal, res.astype(np.uint8))
+io.imsave("output.jpg", res.astype(np.uint8))
 #sys.stdout(theFinal)
 
