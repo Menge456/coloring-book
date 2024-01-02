@@ -28,7 +28,7 @@ app.whenReady().then(() => {
       spawn.spawnSync('python3',["./testAlgo.py", theFile[0]]);
 
       //python.stderr.on('data', (err) => {console.log(`error: + ${err}`)});
-      console.log("output.jpg")
+      //console.log("output.jpg")
       return "output.jpg"
      
 }); 
